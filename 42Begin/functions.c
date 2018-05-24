@@ -12,6 +12,12 @@ void	*ft_memset(void *s, int c, size_t n)
 		i++;
 		temp++;
 	}
+	i = 1;
+	while (i <= n)
+	{
+		temp--;
+		i++;
+	}
 	return (temp);
 }
 
@@ -63,6 +69,41 @@ void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 	{
 		*dest = *l;
 		return (dest);
+	}
+	return (NULL);
+}
+
+void	*ft_memmove(void *dest, const void *src, size_t n)
+{
+	char *des, *sour;
+	size_t i;
+	i = 1;
+	des = dest;
+	sour = (char *) src;
+	while (i <= n)
+	{
+		*des = *sour;
+		i++;
+		des++;
+		sour++;
+	}
+	return (dest);
+}
+
+void	*ft_memchr(const void *s, int c, size_t n)
+{
+	char *new;
+	new = (char *) s;
+	size_t i;
+	i = 1;
+	while (i <= n)
+	{
+		if (*new == (char) c)
+		{
+			return (new);
+		}
+		i++;
+		new++;
 	}
 	return (NULL);
 }

@@ -10,5 +10,11 @@ int	main(void)
 	char str4[50] = "Overly desperate...";
 	printf("Before: %s\n", str3);
 	memmove(str3, str4, 3);
-	printf("After: %s\n", str3);	
+	printf("After: %s\n", str3);
+	printf("-------------\n");
+	char lul[10] = "lmao";
+	char lul2[10] = "abcd";
+	char *hmm;
+	hmm = memcpy(lul, lul2, 2);
+	printf("%s\n", hmm);
 }
