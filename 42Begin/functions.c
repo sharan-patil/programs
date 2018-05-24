@@ -2,7 +2,7 @@
 
 void	*ft_memset(void *s, int c, size_t n)
 {
-	unsigned int i;
+	size_t i;
 	char *temp;
 	temp = s;
 	i = 1;
@@ -28,13 +28,13 @@ void	ft_bzero(void *s, size_t n)
 	}
 }
 
-void *ft_memcpy(void *dest, const void *src, size_t n)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
 	char *des, *sour;
 	size_t i;
 	i = 1;
 	des = dest;
-	sour = src;
+	sour = (char *) src;
 	while (i <= n)
 	{
 		*des = *sour;
@@ -43,4 +43,26 @@ void *ft_memcpy(void *dest, const void *src, size_t n)
 		sour++;
 	}
 	return (dest);
+}
+
+void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
+{
+	size_t i;
+	char *dest = dst;
+	char *l;
+	i = 1;
+	l = (char*) src;
+	while (i <= n && (int) *l != c)
+	{
+		*dest = *l;
+		i++;
+		dest++;
+		l++;
+	}
+	if ((int) *l == c)
+	{
+		*dest = *l;
+		return (dest);
+	}
+	return (NULL);
 }
