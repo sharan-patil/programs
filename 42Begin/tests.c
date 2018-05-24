@@ -13,6 +13,8 @@ void	*ft_memchr(const void *s, int c, size_t n);
 
 void	*ft_memmove(void *dest, const void *src, size_t n);
 
+int	ft_memcmp(const void *s1, const void *s2, size_t n);
+
 int	main(void)
 {
 	char str[50] = "GeeksForGeeks is for programming geeks.";
@@ -66,5 +68,21 @@ int	main(void)
 	bro2 = ft_memchr(new2, 'y', 10);
 	printf("After: %s\n", new2);
 	printf("%c\n", *bro2);
+	printf("-------------\n");
+	char key1[10] = "abcde";
+	char key2[10] = "abcdf";
+	int wew;
+	printf("memcmp test:\n");
+	printf("String1: %s | String2: %s\n", key1, key2);
+	wew = memcmp(key1, key2, 5);
+	printf("Returned Value: %d\n", wew);
+	char key3[10] = "abcde";
+	char key4[10] = "abcdf";
+	printf("-------------\n");
+	printf("ft_memcmp test:\n");
+	printf("String1: %s | String2: %s\n", key3, key4);
+	wew = ft_memcmp(key3, key4, 5);
+	printf("Returned Value: %d", wew);
+
 	return (0);
 }
