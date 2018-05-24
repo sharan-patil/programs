@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdlib.h>
 
 void	*ft_memset(void *s, int c, size_t n)
 {
@@ -128,5 +129,40 @@ int	ft_memcmp(const void *s1, const void *s2, size_t n)
 		}
 		i++;
 	}
-	return (0);
+	return ('\0');
+}
+
+int	ft_strlen(const char *s)
+{
+	int i;
+	i = 0;
+	while (*s != '\0')
+	{
+		i++;
+		s++;
+	}
+	return(i);
+}
+
+char	*ft_strdup(const char *s1)
+{
+	size_t len;
+	char *news;
+	int i;
+	i = 0;
+	len = sizeof(*s1);
+	news = (char*)malloc(len);
+	while (*s1 != '\0')
+	{
+		*news = (char)*s1;
+		news++;
+		s1++;
+		i++; 
+	}
+	while (i != 0)
+	{
+		news--;
+		i--;
+	}
+	return (news);
 }
