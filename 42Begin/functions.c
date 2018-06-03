@@ -159,10 +159,276 @@ char	*ft_strdup(const char *s1)
 		s1++;
 		i++; 
 	}
-	while (i != 0)
+	*news = '\0';
+	news++;
+	while (i != -1)
 	{
 		news--;
 		i--;
 	}
 	return (news);
+}
+
+char	*ft_strcpy(char *dest, const char *src)
+{
+	int i;
+	i = 0;
+	while (*src != '\0')
+	{
+		*dest = (char)*src;
+		dest++;
+		src++;
+		i++;
+	}
+	while (i != 0)
+	{
+		dest--;
+		i--;
+	}
+	return (dest);
+}
+
+char	*ft_strncpy(char *dest, const char *src, size_t n)
+{
+	size_t i;
+	for (i = 0; i < n && src[i] != '\0'; i++)
+		dest[i] = src[i];
+	for(; i < n; i++)
+		dest[i] = '\0';
+	return (dest);
+}
+
+char	*ft_strcat(char *dest, const char *src)
+{
+	int i;
+	i = 0;
+	while (*dest != '\0')
+	{
+		i++;
+		dest++;
+	}
+	while (*src != '\0')
+	{
+		i++;
+		*dest = (char)*src;
+		dest++;
+		src++;
+	}
+	i++;
+	*dest = '\0';
+	while (i != 1)
+	{
+		dest--;
+		i--;
+	}
+	return (dest);
+}
+
+char	*ft_strncat(char *dest, const char *src, size_t n)
+{
+	size_t len_d = ft_strlen(dest);
+	size_t i;
+	for (i = 0; i < n && src[i] != '\0'; i++)
+		dest[len_d + i] = src[i];
+	dest[len_d + i] = '\0';
+	return (dest);
+}
+
+size_t	ft_strlcat(char *dest, const char *src, size_t size)
+{
+	int i, len_d;
+	i = 0;
+	len_d = ft_strlen(dest);
+	while (i < (int)size - len_d - 1)
+	{
+		dest[len_d + i] = src[i];
+		i++;
+	}
+	dest[ft_strlen(dest) + i] = '\0';
+	return (len_d + ft_strlen(src));
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s != '\0')
+	{
+		if (*s == c)
+			return ((char*)s);
+		s++;
+	}
+	return (NULL);
+}
+
+char	*ft_strrchr(const char *s, int c)
+{
+	int len, i;
+	len = ft_strlen(s);
+	i = len;
+	while (i != 0)
+	{
+		if (s[i] == c)
+			return ((char*)&s[i]);
+		i--;
+	}
+	return (NULL);
+}
+
+char	*ft_strstr(const char* haystack, const char* needle)
+{
+	int i, j, len_n;
+	i = 0;
+	len_n = ft_strlen(needle);
+	while (haystack[i] != '\0')
+	{
+		if (haystack[i] == needle[0])
+		{
+			j = 0;
+			while (j < len_n)
+			{
+				if (haystack[i] != needle[j])
+					break ;
+				j++;
+				i++;
+				if (j == len_n)
+					return ((char*)&haystack[i - len_n]);
+			}
+			continue ;
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+char	*ft_strnstr(const char* haystack, const char* needle, size_t n)
+{
+	int i, j, len_n;
+	i = 0;
+	len_n = ft_strlen(needle);
+	while (haystack[i] != '\0')
+	{
+		if (haystack[i] == needle[0])
+		{
+			j = 0;
+			while (j < len_n && j < (int)n)
+			{
+				if (haystack[i] != needle[j])
+					break ;
+				j++;
+				i++;
+				if (j == len_n)
+					return ((char*)&haystack[i - len_n]);
+			}
+			continue ;
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+int	ft_strcmp(const char* s1, const char* s2)
+{
+	return (ft_strlen(s1) - ft_strlen(s2));
+}
+
+int	ft_strncmp(const char* s1, const char* s2, size_t n)
+{
+	size_t i;
+	i = 0;
+	while (i < n)
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+		i++;
+	}
+	return (0);
+}
+
+int	ft_atoi(const char* s)
+{
+	int i, n, j, positive, c, ans;
+	c = 0;
+	j = 1;
+	i = 0;
+	n = 0;
+	ans = 0;
+	while (s[i] == ' ' || s[i] == '\n' || s[i] == '\t' || s[i] == '\v' || s[i] == '\f' || s[i] == '\r')
+	{
+		i++;
+	}		
+	if (s[i] == '-')
+	{
+		positive = 0;
+		i++;
+	}
+	if (s[i] == '+')
+	{
+		positive = 1;
+		i++;
+	}
+	while (s[i] >= 48 && s[i] <= 57)
+	{
+		n = (j * (s[i] - 48)) + n;
+		j *= 10;
+		i++;
+		c++;
+	}
+	j /= 10;
+	while (n != 0)
+	{
+		ans = ((n % 10) * j) + ans;
+		j /= 10;
+		n = n / 10;
+	}
+	if (positive == 0)
+		ans *= -1;
+	return (ans);
+}
+
+int	ft_isalpha(int c)
+{
+	if (c >= 65 && c <= 90)
+		return (1);
+	if (c >= 97 && c <= 122)
+		return (1);
+	return (0);
+}
+
+int	ft_isdigit(int c)
+{
+	if (c >= 48 && c <= 57)
+		return (1);
+	return (0);
+}
+
+int	ft_isalnum(int c)
+{
+	return (ft_isalpha(c) || ft_isdigit(c));
+}
+
+int	ft_isascii(int c)
+{
+	if (c >= 0 && c <= 127)
+		return (1);
+	return (0);
+}
+
+int	ft_isprint(int c)
+{
+	if (c >= 32 && c <= 126)
+		return (1);
+	return (0);
+}
+
+int	ft_toupper(int c)
+{
+	if (c >= 97 && c <= 122)
+		c = c - 32;
+	return (c);
+}
+
+int	ft_tolower(int c)
+{
+	if (c >= 65 && c <= 90)
+		c = c + 32;
+	return (c);
 }

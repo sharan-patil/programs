@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 void	*ft_memset(void *s, int c, size_t n);
 
@@ -19,6 +20,44 @@ int	ft_memcmp(const void *s1, const void *s2, size_t n);
 int	ft_strlen(const char *s);
 
 char	*ft_strdup(const char *s1);
+
+char	*ft_strcpy(char *dest, const char *src);
+
+char	*ft_strncpy(char *dest, const char *src, size_t n);
+
+char	*ft_strcat(char *dest, const char *src);
+
+char	*ft_strncat(char *dest, const char *src, size_t n);
+
+size_t	ft_strlcat(char *dest, const char *src, size_t size);
+
+char	*ft_strchr(const char *s, int c);
+
+char	*ft_strrchr(const char *s, int c);
+
+char	*ft_strstr(const char* haystack, const char* needle);
+
+char	*ft_strnstr(const char* haystack, const char* needle, size_t n);
+
+int	ft_strcmp(const char* s1, const char* s2);
+
+int	ft_strncmp(const char* s1, const char* s2, size_t n);
+
+int	ft_atoi(const char* s);
+
+int	ft_isalpha(int c);
+
+int	ft_isdigit(int c);
+
+int	ft_isalnum(int c);
+
+int	ft_isascii(int c);
+
+int	ft_isprint(int c);
+
+int	ft_toupper(int c);
+
+int	ft_tolower(int c);
 
 int	main(void)
 {
@@ -89,7 +128,7 @@ int	main(void)
 	wew = ft_memcmp(key3, key4, 5);
 	printf("Returned Value: %d\n", wew);
 	printf("-------------\n");
-	printf("strlen test:\n");
+	printf("ft_strlen test:\n");
 	printf("String: \"lmao\"\n");
 	char pop[10] = "lmao";
 	int count = ft_strlen(pop);
@@ -100,6 +139,127 @@ int	main(void)
 	char name1[10] = "lmao";
 	char *name2;
 	name2 = ft_strdup(name1);
-	printf("Returned Value: %s", name2);
+	printf("Returned Value: %s\n", name2);
+	printf("-------------\n");
+	printf("ft_strcpy test:\n");
+	printf("string = think\n");
+	char think[6] = "think";
+	char think2[6];
+	char think3[6];
+	printf("Returned Value: %s\n", ft_strcpy(think2, think));
+	printf("Second string: %s\n", think2);
+	printf("-------------\n");
+	printf("ft_strncpy test:\n");
+	printf("string: think and n = 3\n");
+	printf("Returned Value: %s\n", ft_strncpy(think3, think, 3));	
+	printf("second string: %s\n", think3);
+	printf("-------------\n");
+	printf("strcat test:\n");
+	printf("string1 = lmao & string2 = hmm\n");
+	char box1[10] = "lmao";
+	char box2[10] = "hmm";
+	printf("Returned Value: %s\n", strcat(box1, box2));
+	printf("string: %s\n", box1);
+	printf("-------------\n");
+	printf("ft_strcat test:\n");
+	printf("string1 = lmao & string2 = hmm\n");
+	char box3[10] = "lmao";
+	char box4[10] = "hmm";
+	printf("Returned Value: %s\n", ft_strcat(box3, box4));
+	printf("string: %s\n", box3);
+	printf("-------------\n");
+	printf("ft_strncat test: \n");
+	char box5[10] = "lmao";
+	char box6[10] = "hmm";
+	printf("string1 = lmao & string2 = hmm & n = 2\n");
+	printf("Returned Value: %s\n", ft_strncat(box5, box6, 2));
+	printf("string: %s\n", box5);
+	printf("-------------\n");
+	printf("ft_strlcat test:\n");
+	char box7[10] = "lmao";
+	char box8[10] = "hmm";
+	printf("string1 = lmao & string2 = hmm & size = 7\n");
+	printf("Returned Value: %d\n", (int)ft_strlcat(box7, box8, 7));
+	printf("string: %s\n", box7);
+	printf("-------------\n");
+	printf("strchr test:\n");
+	printf("string: mouse & int: o\n");
+	printf("Returned Value: %s\n", (char*)strchr("mouse", 'o'));
+	printf("-------------\n");
+	printf("ft_strchr test:\n");
+	printf("string: mouse & int: o\n");
+	printf("Returned Value: %s\n", (char*)ft_strchr("mouse", 'o'));
+	printf("-------------\n");
+	printf("strrchr test:\n");
+	printf("string: member & int: m\n");
+	printf("Returned Value: %s\n", (char*)strrchr("member", 'm'));
+	printf("-------------\n");
+	printf("ft_strrchr test:\n");
+	printf("string: member & int: m\n");
+	printf("Returned Value: %s\n", (char*)ft_strrchr("member", 'm'));
+	printf("-------------\n");
+	printf("strstr test:\n");
+	printf("string1: execute & string2: cu\n");
+	printf("Returned Value: %s\n", strstr("execute", "cu"));
+	printf("-------------\n");
+	printf("ft_strstr test:\n");
+	printf("string1: execute & string2: cu\n");
+	printf("Returned Value: %s\n", ft_strstr("execute", "cu"));
+	printf("-------------\n");
+	printf("ft_strnstr test:\n");
+	printf("string1: execute & string2: cut\n");
+	printf("Returned Value: %s\n", ft_strnstr("execute", "cut", 2));
+	printf("-------------\n");
+	printf("strcmp test:\n");
+	printf("string1: execute & string2: cut\n");
+	printf("Returned Value: %d\n", strcmp("execute", "cut"));
+	printf("-------------\n");
+	printf("ft_strcmp test:\n");
+	printf("string1: execute & string2: cut\n");
+	printf("Returned Value: %d\n", ft_strcmp("execute", "cut"));
+	printf("-------------\n");
+	printf("strncmp test:\n");
+	printf("string1: execute & string2: cut & n = 2\n");
+	printf("Returned Value: %d\n", strncmp("execute", "cut", 2));
+	printf("-------------\n");
+	printf("ft_strncmp test:\n");
+	printf("string1: execute & string2: cut & n = 2\n");
+	printf("Returned Value: %d\n", ft_strncmp("execute", "cut", 2));
+	printf("-------------\n");
+	printf("atoi test:\n");
+	printf("string: \"[23s\"\n");
+	printf("Returned Value: %d\n", atoi("[23s"));
+	printf("-------------\n");
+	printf("ft_atoi test:\n");
+	printf("string: \"234s\"\n");
+	printf("Returned Value: %d\n", ft_atoi("234s"));
+	printf("-------------\n");
+	printf("ft_isalpha test:\n");
+	printf("input: c\n");
+	printf("Returned Value: %d\n", ft_isalpha('c'));
+	printf("-------------\n");
+	printf("ft_isdigit test:\n");
+	printf("input: c\n");
+	printf("Returned Value: %d\n", ft_isdigit('c'));
+	printf("-------------\n");
+	printf("ft_isalnum test:\n");
+	printf("input: c\n");
+	printf("Returned Value: %d\n", ft_isalnum('c'));
+	printf("-------------\n");
+	printf("ft_isascii test:\n");
+	printf("input: 128\n");
+	printf("Returned Value: %d\n", ft_isascii(128));
+	printf("-------------\n");
+	printf("ft_isprint test:\n");
+	printf("input: 32\n");
+	printf("Returned Value: %d\n", ft_isprint(32));
+	printf("-------------\n");
+	printf("ft_toupper test:\n");
+	printf("input: a\n");
+	printf("Returned Value: %c\n", ft_toupper('a'));
+	printf("-------------\n");
+	printf("ft_tolower test:\n");
+	printf("input: 'A'\n");
+	printf("Returned Value: %c\n", ft_tolower('A'));
 	return (0);
 }

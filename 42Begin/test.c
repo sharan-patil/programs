@@ -17,4 +17,7 @@ int	main(void)
 	char *hmm;
 	hmm = memcpy(lul, lul2, 2);
 	printf("%s\n", hmm);
+	char lmao[5] = "1";
+	if (lmao[0] == 49)
+		printf("\nWTF\n");
 }
