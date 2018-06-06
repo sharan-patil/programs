@@ -67,11 +67,12 @@ $(OBJ): $(FILES)
 
 clean:
 	rm -f $(OBJ)
-	rm -f $(FILES)
 
 fclean: clean
-	rm -f $(NAME)
 
-re: fclean all
+re: clean all
+
+bring:
+	cp functions/*.c .
 
 .PHONY = clean fclean all re

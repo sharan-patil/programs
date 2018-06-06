@@ -2,16 +2,16 @@
 
 int	ft_atoi(const char* s)
 {
-	int i, n, j, positive, c, ans;
+	long int i, n, j, positive = 1, c, ans;
 	c = 0;
 	j = 1;
 	i = 0;
 	n = 0;
 	ans = 0;
 	while (s[i] == ' ' || s[i] == '\n' || s[i] == '\t' || s[i] == '\v' || s[i] == '\f' || s[i] == '\r')
-	{
 		i++;
-	}		
+	if (s[i] < 48 && s[i + 1] < 48)
+		return (0);
 	if (s[i] == '-')
 	{
 		positive = 0;
@@ -22,6 +22,8 @@ int	ft_atoi(const char* s)
 		positive = 1;
 		i++;
 	}
+	while (s[i] == 48)
+		i++;
 	while (s[i] >= 48 && s[i] <= 57)
 	{
 		n = (j * (s[i] - 48)) + n;
