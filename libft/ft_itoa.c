@@ -3,7 +3,7 @@
 char	*ft_itoa(int n)
 {
 	char *new;
-	int temp, i, j, len, positive;
+	int temp, i, j, len, positive = 1;
 	new = (char*)malloc(15);
 	j = 0;
 	temp = n;
@@ -39,5 +39,5 @@ char	*ft_itoa(int n)
 		temp /= 10;
 		i++;
 	}
-	return (new);
+	return (&new[0]);
 }
