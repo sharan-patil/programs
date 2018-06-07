@@ -2,7 +2,7 @@
 
 int	ft_strequ(char const *s1, char const *s2)
 {
-	int i;
+	size_t i;
 	i = 0;
 	if (ft_strlen(s1) != ft_strlen(s2))
 		return (0);

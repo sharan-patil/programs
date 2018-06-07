@@ -1,30 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jrameau <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/09/23 03:19:21 by jrameau           #+#    #+#             */
+/*   Updated: 2016/09/25 02:15:51 by jrameau          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <libft.h>
 
-char	*ft_strnstr(const char* haystack, const char* needle, size_t n)
+char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
-	int i, j, len_n, temp;
-	i = 0;
-	len_n = ft_strlen(needle);
-	if (needle[0] == '\0')
-		return ((char*)&haystack[0]);
-	while (haystack[i] != '\0' && (unsigned int)i < n)
+	size_t		i;
+	size_t		j;
+	size_t		k;
+	int			found;
+
+	i = -1;
+	found = 1;
+	if (!ft_strlen(little))
+		return ((char *)big);
+	while (*(big + ++i) && i < len)
 	{
-		if (haystack[i] == needle[0])
+		j = 0;
+		if (*(big + i) == *(little + 0))
 		{
-			j = 0;
-			temp = i;
-			while (j < len_n)
-			{
-				if (haystack[temp] != needle[j])
-					break ;
-				j++;
-				temp++;
-				if (j == len_n)
-					return ((char*)&haystack[i - len_n]);
-			}
-			continue ;
+			k = i;
+			found = 1;
+			while (*(big + k) && *(little + j) && j < len && k < len)
+				if (*(big + k++) != *(little + j++))
+					found = 0;
+			if (found && !*(little + j))
+				return ((char *)big + i);
 		}
-		i++;
 	}
 	return (NULL);
 }

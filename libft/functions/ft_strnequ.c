@@ -4,6 +4,8 @@ int	ft_strnequ(char const *s1, char const *s2, size_t size)
 {
 	int i;
 	i = 0;
+	if (size == 0)
+		return (1);
 	if (ft_strlen(s1) != ft_strlen(s2))
 		return (0);
 	while ((unsigned int)i < size)
