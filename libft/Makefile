@@ -1,17 +1,7 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: jrameau <jrameau@student.42.us.org>        +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2016/09/21 14:58:27 by jrameau           #+#    #+#              #
-#    Updated: 2017/04/24 03:49:23 by jrameau          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME		= libft.a
+
 CFLAGS		= -Wall -Werror -Wextra -I. -c
+
 FILES		= ft_memset.c \
 				ft_bzero.c \
 				ft_memcpy.c \
@@ -32,8 +22,6 @@ FILES		= ft_memset.c \
 				ft_strcmp.c \
 				ft_strncmp.c \
 				ft_atoi.c \
-				ft_islower.c \
-				ft_isupper.c \
 				ft_isalpha.c \
 				ft_isdigit.c \
 				ft_isalnum.c \
@@ -60,7 +48,6 @@ FILES		= ft_memset.c \
 				ft_itoa.c \
 				ft_putchar.c \
 				ft_putchar_fd.c \
-				ft_countwords.c \
 				ft_putstr.c \
 				ft_putendl.c \
 				ft_putnbr.c \
@@ -73,56 +60,25 @@ FILES		= ft_memset.c \
 				ft_lstadd.c \
 				ft_lstiter.c \
 				ft_lstmap.c \
-				ft_strndup.c \
-				ft_capitalize.c \
-				ft_lst_reverse.c \
-				ft_realloc.c \
-				ft_strjoinch.c \
-				ft_strnchr.c \
-				ft_copyuntil.c \
-				ft_strstartswith.c \
-				ft_intlen.c \
-				ft_strendswith.c \
-				ft_pathjoin.c \
-				ft_lstaddback.c \
-				get_next_line.c \
-				ft_putnstr.c \
-				ft_strreplace.c \
-				ft_isemptystr.c \
-				ft_strsplitall.c \
-				ft_countwordsall.c \
-				ft_freestrarr.c \
-				ft_strjoincl.c \
-				ft_strjoinchcl.c \
-				ft_count2darray.c \
-				ft_strarrmax.c \
-				ft_get_parent_path.c
+
 OBJ			= $(FILES:%.c=%.o)
 
 all: $(NAME)
 
-copy:
-	cp -f libc-funcs/*.c .
-	cp -f additional-funcs/*.c .
-	cp -f bonus-funcs/*.c .
-	cp -f personal-funcs/*.c .
+bring:
+	cp functions/*.c .
 
-# This won't run if the .o files don't exist or are not modified
 $(NAME): $(OBJ)
 	ar rcs $(NAME) $(OBJ)
 
-# This won't run if the source files don't exist or are not modified
 $(OBJ): $(FILES)
 	gcc $(CFLAGS) $(FILES)
 
 clean:
 	rm -f $(OBJ)
-#	rm -f $(FILES)  comment this line if you don't want it to remove the source files from the root
 
 fclean: clean
 
 re: clean all
 
-# I use .PHONY to make sure that gnu make will still run even if files called
-# clean / fclean / all and re already exist in the directory
 .PHONY: clean fclean all re
