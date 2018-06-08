@@ -2,19 +2,14 @@
 
 char	*ft_strcpy(char *dest, const char *src)
 {
-	int i;
+	int i, len_src;
 	i = 0;
-	while (*src != '\0')
+    len_src = ft_strlen(src);
+	while (i < len_src)
 	{
-		*dest = (char)*src;
-		dest++;
-		src++;
-		i++;
+        dest[i] = src[i];
+        i++;
 	}
-	while (i != 0)
-	{
-		dest--;
-		i--;
-	}
-	return (dest);
+    dest[i] = '\0';
+	return (&dest[0]);
 }

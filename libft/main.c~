@@ -1,0 +1,18 @@
+#include <libft.h>
+
+int main(void)
+{
+    char arr[] = "the cake is a lie !\0I'm hidden lol\r\n";
+    char arr2[] = "there is no stars in the sky";
+    strlcat(arr2, arr, strlen(arr) + 4);
+    printf("ori: %s\n", arr2);
+    char arr3[] = "the cake is a lie !\0I'm hidden lol\r\n";
+    char arr4[] = "there is no stars in the sky";
+    ft_strlcat(arr2, arr, strlen(arr3)+4);
+    printf("fak: %s\n", arr4);
+    char arr5[] = "n\0AAAA";
+    char arr6[] = "\0AAAAAAAAAAA";
+    ft_strlcat(arr6, arr5, 10);
+    printf("%s\n", arr6);
+    return (0);
+}

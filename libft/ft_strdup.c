@@ -6,8 +6,10 @@ char	*ft_strdup(const char *s1)
 	char *news;
 	int i;
 	i = 0;
-	len = sizeof(*s1);
-	news = (char*)malloc(len);
+	len = ft_strlen(s1);
+	news = (char*)malloc(len + 1);
+    if (!news)
+        return (NULL);
 	while (*s1 != '\0')
 	{
 		*news = (char)*s1;
