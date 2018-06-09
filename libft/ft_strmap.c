@@ -8,6 +8,8 @@ char	*ft_strmap(char const *s, char (*f)(char))
 	while (s[i] != '\0')
 		i++;
 	new = (char *)malloc(i + 1);
+	if (!new)
+		return (NULL);
 	i = 0;
 	while (s[i] != '\0')
 	{

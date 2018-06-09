@@ -2,9 +2,14 @@
 
 int main(void)
 {
-    char arr[] = "MZIRIBMZIRIBMZE123";
-    char arr2[] = "MZIRIBMZE";
-    printf("%s\n", ft_strnstr(arr, arr2, ft_strlen(arr2)));
-    printf("%s\n", strnstr(arr, arr2, ft_strlen(arr2)));
+	int i = 0;
+    char arr[] = "split  ||this|for|me|||||!";
+    char **lmao;
+    lmao = ft_strsplit(arr, '|');
+    while (i < 10)
+    {
+    	printf("%s\n", lmao[i]);
+    	i++;
+    }
     return (0);
 }
