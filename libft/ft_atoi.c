@@ -2,7 +2,7 @@
 
 int	ft_atoi(const char* s)
 {
-	long int i, n, j, positive = 1, c, ans;
+	long long int i, n, j, positive = 1, c, ans;
 	c = 0;
 	j = 1;
 	i = 0;
