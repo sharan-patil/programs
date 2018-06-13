@@ -9,32 +9,8 @@ char	**ft_strsplit(char const *s, char c)
 	q = 0;
 	i = 0;
 	count = 0;
-	// new = (char**)malloc(ft_strlen(s) * sizeof(char*));
-	// if (!new)
-	// 	return (NULL);
-	// while (1)
-	// {
-	// 	while (s[i] == c)
-	// 		i++;
-	// 	while (s[i] != c && s[i] != '\0')
-	// 	{
-	// 		i++;
-	// 		q++;
-	// 	}
-	// 	new[p] = (char*)malloc(q + 1);
-	// 	count = 0;
-	// 	while (count <= q - 1)
-	// 	{
-	// 		new[p][count] = s[i - q + count];
-	// 		count++;
-	// 	}
-	// 	new[p][count] = '\0';
-	// 	q = 0;
-	// 	p++;
-	// 	if (s[i] == '\0')
-	// 		break ;
-	// }
-	// return (new);
+	if (!s)
+		return (NULL);
 	while (s[i] != '\0')
 	{
 		while (s[i] == c)
@@ -55,13 +31,17 @@ char	**ft_strsplit(char const *s, char c)
 	}
 	points[0][0] = p;
 	new = (char**)malloc(sizeof(char*) * points[0][0]);
+	if (!new)
+		return (NULL);
 	i = 1;
 	q = 0;
 	p = 0;
 	count = 0;
 	while (i < points[0][0])
 	{
-		new[i - 1] = (char*)malloc(points[i][1] + 1);
+		new[i - 1] = (char*)malloc(sizeof(char) * (points[i][1] + 1));
+		if (!new[i - 1])
+			return (NULL);
 		while (count < points[i][1])
 		{
 			new[i - 1][count] = s[(points[i][0] + count)];
@@ -71,5 +51,6 @@ char	**ft_strsplit(char const *s, char c)
 		count = 0;
 		i++;
 	}
+	new[i - 1] = NULL;
 	return (new);
 }

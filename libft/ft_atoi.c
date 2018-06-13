@@ -2,7 +2,7 @@
 
 int	ft_atoi(const char* s)
 {
-	long long int i, n, j, positive = 1, c, ans;
+	int i, n, j, positive = 1, c, ans;
 	c = 0;
 	j = 1;
 	i = 0;
@@ -10,35 +10,31 @@ int	ft_atoi(const char* s)
 	ans = 0;
 	while (s[i] == ' ' || s[i] == '\n' || s[i] == '\t' || s[i] == '\v' || s[i] == '\f' || s[i] == '\r')
 		i++;
-	if (s[i] < 48 && s[i + 1] < 48)
-		return (0);
-	if (s[i] == '-')
+	if (s[i] == '+')
+		i++;
+	else if (s[i] == '-')
 	{
 		positive = 0;
 		i++;
 	}
-	if (s[i] == '+')
+	while (s[i] != '\0')
 	{
-		positive = 1;
-		i++;
-	}
-	while (s[i] == 48)
-		i++;
-	while (s[i] >= 48 && s[i] <= 57)
-	{
-		n = (j * (s[i] - 48)) + n;
-		j *= 10;
-		i++;
+		if (s[i] >= 48 && s[i] <= 57)
+		{
+			j = s[i] - '0';
+			ans = (ans * 10) + j;
+		}
+		else
+			break ;
 		c++;
+		i++;
 	}
-	j /= 10;
-	while (n != 0)
-	{
-		ans = ((n % 10) * j) + ans;
-		j /= 10;
-		n = n / 10;
-	}
-	if (positive == 0)
-		ans *= -1;
-	return (ans);
+	if (c > 10 && !positive)
+		return (0);
+	else if (c > 10 && positive)
+		return (-1);
+	if (!positive)
+		return (ans * (-1));
+	else
+		return (ans);
 }

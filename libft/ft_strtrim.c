@@ -4,6 +4,8 @@ char	*ft_strtrim(char const *s)
 {
 	int i, j, len_s, count;
 	char *new;
+	if (!s)
+		return (NULL);
 	len_s = ft_strlen(s);
 	i = 0;
 	j = len_s - 1;

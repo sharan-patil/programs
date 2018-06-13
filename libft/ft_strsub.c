@@ -4,6 +4,8 @@ char *ft_strsub(char const *s, unsigned int start, size_t len)
 {
 	char *new;
 	unsigned int i, j;
+	if (!s)
+		return (NULL);
 	new = (char*)malloc(len + 1);
 	if (!new)
 		return (NULL);

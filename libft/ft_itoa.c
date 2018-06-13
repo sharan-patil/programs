@@ -5,14 +5,12 @@ char	*ft_itoa(int n)
 	char *new;
 	long int temp, i, j, len, positive = 1, tn;
 	tn = (long int) n;
-	new = (char*)malloc(15);
 	j = 0;
 	temp = tn;
 	i = 0;
 	if (tn < 0)
 	{
 		positive = 0;
-		new[0] = '-';
 		tn *= -1;
 	}
 	while (temp != 0)
@@ -20,9 +18,20 @@ char	*ft_itoa(int n)
 		temp /= 10;
 		i++;
 	}
-	if (i == 0)
-		return ("0");
 	len = i;
+	if (n == 0)
+		len++;
+	new = (char*)malloc(len + 1 + !positive);
+	if (!new)
+		return (NULL);
+	if (i == 0)
+	{
+		new[0] = '0';
+		new[1] = '\0';
+		return (&new[0]);
+	}
+	if (!positive)
+		new[0] = '-';
 	temp = 1;
 	while (j < i - 1)
 	{
@@ -42,5 +51,6 @@ char	*ft_itoa(int n)
 		temp /= 10;
 		i++;
 	}
+	new[i] = '\0';
 	return (&new[0]);
 }

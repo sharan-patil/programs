@@ -5,6 +5,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int len1, i, len2;
 	char *new;
 	i = 0;
+	if (!s1 || !s2)
+		return (NULL);
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
 	new = (char*)malloc(len1 + len2 + 1);

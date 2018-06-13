@@ -5,6 +5,8 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	int i;
 	char *new;
 	i = 0;
+	if (!s)
+		return (NULL);
 	while (s[i] != '\0')
 		i++;
 	new = (char*)malloc(i + 1);
