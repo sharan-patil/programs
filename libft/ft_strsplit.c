@@ -1,56 +1,92 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strsplit.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: spatil <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/06/14 15:25:21 by spatil            #+#    #+#             */
+/*   Updated: 2018/06/14 15:25:24 by spatil           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <libft.h>
 
-char	**ft_strsplit(char const *s, char c)
+static	void		initialise(int *count, int i)
 {
-	char **new;
-	int i, p, q, count;
-	int points[100][2];
-	p = 1;
-	q = 0;
-	i = 0;
-	count = 0;
+	if (i == 1)
+	{
+		count[1] = 1;
+		count[2] = 0;
+		count[0] = 0;
+		count[3] = 0;
+	}
+	if (i == 2)
+	{
+		count[0] = 1;
+		count[2] = 0;
+		count[1] = 0;
+		count[3] = 0;
+	}
+}
+
+static	void		check(char *s, int *count, int points[100][2], char c)
+{
+	while (s[count[0]] != '\0')
+	{
+		while (s[count[0]] == c)
+			count[0]++;
+		if (s[count[0]] == '\0')
+			break ;
+		points[count[1]][count[2]] = count[0];
+		count[2]++;
+		while (s[count[0]] != '\0' && s[count[0]] != c)
+		{
+			count[0]++;
+			count[3]++;
+		}
+		points[count[1]][count[2]] = count[3];
+		count[1]++;
+		count[2] = 0;
+		count[3] = 0;
+	}
+	points[0][0] = count[1];
+}
+
+static	void		check2(char *s, int *count, int points[100][2], char **new)
+{
+	while (count[3] < points[count[0]][1])
+	{
+		new[count[0] - 1][count[3]] = s[(points[count[0]][0] + count[3])];
+		count[3]++;
+	}
+	new[count[0] - 1][count[3]] = '\0';
+	count[3] = 0;
+	count[0]++;
+}
+
+char				**ft_strsplit(char const *s, char c)
+{
+	char	**new;
+	int		count[4];
+	int		points[100][2];
+
+	initialise(count, 1);
 	if (!s)
 		return (NULL);
-	while (s[i] != '\0')
-	{
-		while (s[i] == c)
-			i++;
-		if (s[i] == '\0')
-			break ;
-		points[p][q] = i;
-		q++;
-		while (s[i] != '\0' && s[i] != c)
-		{
-			i++;
-			count++;
-		}
-		points[p][q] = count;
-		p++;
-		q = 0;
-		count = 0;
-	}
-	points[0][0] = p;
+	check((char*)s, count, points, c);
 	new = (char**)malloc(sizeof(char*) * points[0][0]);
 	if (!new)
 		return (NULL);
-	i = 1;
-	q = 0;
-	p = 0;
-	count = 0;
-	while (i < points[0][0])
+	initialise(count, 2);
+	while (count[0] < points[0][0])
 	{
-		new[i - 1] = (char*)malloc(sizeof(char) * (points[i][1] + 1));
-		if (!new[i - 1])
+		new[count[0] - 1] = (char*)malloc(sizeof(char) *
+			(points[count[0]][1] + 1));
+		if (!new[count[0] - 1])
 			return (NULL);
-		while (count < points[i][1])
-		{
-			new[i - 1][count] = s[(points[i][0] + count)];
-			count++;
-		}
-		new[i - 1][count] = '\0';
-		count = 0;
-		i++;
+		check2((char*)s, count, points, new);
 	}
-	new[i - 1] = NULL;
+	new[count[0] - 1] = NULL;
 	return (new);
 }
