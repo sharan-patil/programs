@@ -1,0 +1,16 @@
+int	function(char **ptr)
+{
+//	ptr = (char**)malloc(1);
+//	*ptr = (char*)malloc(3);
+	*ptr = "ababababababvvababababababababababababab";
+	printf("ptr: %s\n", *ptr);
+	return (0);
+}
+
+int	main(void)
+{
+	char **new;
+	function(new);
+	printf("new: %s\n", *new);
+	return (0);
+}
