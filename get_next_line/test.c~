@@ -1,16 +1,42 @@
-int	function(char **ptr)
-{
-//	ptr = (char**)malloc(1);
-//	*ptr = (char*)malloc(3);
-	*ptr = "ababababababvvababababababababababababab";
-	printf("ptr: %s\n", *ptr);
-	return (0);
-}
+static int i;
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <string.h>
+
+// int	function(char **ptr)
+// {
+// //	ptr = (char**)malloc(1);
+// //	*ptr = (char*)malloc(3);
+// 	*ptr = "ababababababvvababababababababababababab";
+// 	printf("ptr: %s\n", *ptr);
+// 	i++;
+// 	return (0);
+// }
 
 int	main(void)
 {
-	char **new;
-	function(new);
-	printf("new: %s\n", *new);
+	// char **new;
+	// function(new);
+	// printf("new: %s\n", *new);
+	// char *lmao;
+	// lmao = (char*)malloc(5);
+	// lmao[0] = 'l';
+	// lmao[1] = 'm';
+	// lmao[2] = 'a';
+	// lmao[3] = 'o';
+	// lmao[4] = '\0';
+	// printf("lmao1: %s\n", lmao);
+	// lmao = (char*)malloc(5);
+	// lmao[0] = 'l';
+	// lmao[1] = 'm';
+	// lmao[2] = 'a';
+	// lmao[3] = 'o';
+	// lmao[4] = '\0';
+	// printf("lmao2: %s\n", lmao);
+	// printf("i: %d\n", i);
+	int fd = open("text", O_RDWR);
+	write(fd, '\0', 1);
 	return (0);
 }

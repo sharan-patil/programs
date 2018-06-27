@@ -2,50 +2,79 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <libft.h>
 
 int	get_next_line(const int fd, char **line)
 {
-	char a[BUFF_SIZE + 1];
-	char *temp, *try;
+	static char a[BUFF_SIZE + 1];
 	static int i;
-	int bytes_read;
+	static int count;
+	static int prev_fd;
+	static int bytes_read;
+	int bytes_read_now;
 	int j;
 
-	i = 0;
+	printf("fd: %d\n", fd);
+	if (fd < 0 || line == NULL || read(fd, a, 0))
+		return (-1);
+	if (i == 0)
+		prev_fd = fd;
+	if (prev_fd != fd)
+	{
+		count = 0;
+		i = 0;
+		prev_fd = fd;
+		bytes_read = 0;
+	}
+	if (i == 0)
+	{
+		bytes_read_now = read(fd, &a[0], BUFF_SIZE);
+		a[bytes_read_now] = '\0';
+		bytes_read = bytes_read_now;
+	}
+	*line = (char*)malloc(100000);
+	j = 0;
 	while (1)
 	{
-		j = 0;
-		bytes_read = read(fd, a, BUFF_SIZE);
-		a[bytes_read] = '\0';
-		strcpy(line[0], &a[0]);
-		return (0);
-		if (!bytes_read)
-			return (-1);
-		while (j < BUFF_SIZE)
+		while (i < (BUFF_SIZE) * (count + 1))
 		{
-			if (a[j] == '\n' || a[j] == -1)
+			if (a[i - (BUFF_SIZE * count)] == '\n')
 			{
-				*line[i] = '\0';
-				return (0);
+				i += 1;
+				line[0][j] = '\0';
+				if (i - 1 == bytes_read)
+				{
+					return (0);
+				}
+				return (1);
 			}
-			printf("here");
-			*line[i] = a[j];
+			ft_strncpy(&line[0][j], &a[i - (BUFF_SIZE * count)], 1);
 			i++;
 			j++;
 		}
-		line[i] = (char*)malloc(sizeof(char) * BUFF_SIZE);
+		if (i - (BUFF_SIZE * count) == BUFF_SIZE)
+		{
+			bytes_read_now = read(fd, &a[0], BUFF_SIZE);
+			bytes_read = bytes_read + bytes_read_now;
+			count++;
+		}
+		if (!bytes_read_now)
+		{
+			return (0);
+		}
 	}
 }
 
-int	main(void)
-{
-	char **line;
-	int fd;
-//	line = (char**)malloc(1);
-//	line[0] = (char*)malloc(10);
-	fd = open("text", O_RDONLY);
-	get_next_line(fd, line);
-	printf("*line: %s\n", *line);
-	return (0);
-}
+// int	main(void)
+// {
+// 	char **line;
+// 	int fd;
+// 	int eof;
+// 	eof = 26;
+// //	line = (char**)malloc(1);
+// //	line[0] = (char*)malloc(10);
+// 	fd = open("one_big_fat_line.txt", O_RDONLY);
+// 	while (get_next_line(fd, line));
+// 	printf("read: %zd\n", read(fd, NULL, 10));
+// 	close(fd);
+// 	return (0);
+// }
