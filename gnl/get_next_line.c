@@ -14,10 +14,10 @@ int	malloc_again(char *line)
 
 int	get_next_line(const int fd, char **line)
 {
+	static int j;
 	static char a[BUFF_SIZE + 1];
 	int i;
 	int bytes_read_now;
-	int j;
 	int n;
 
 	j = 0;
@@ -27,50 +27,77 @@ int	get_next_line(const int fd, char **line)
 	line[0] = (char*)malloc(50000);
 	ft_bzero(line[0], 50000);
 	i = 0;
-	while (n < BUFF_SIZE)
+	// while (n < BUFF_SIZE)
+	// {
+	// 	if (a[n] == '\n')
+	// 	{
+	// 		n += 1;
+	// 		while (n < BUFF_SIZE)
+	// 		{
+	// 			if (a[n] != '\n')
+	// 			{
+	// 				line[0][i] = a[n];
+	// 				n++;
+	// 				i++;	
+	// 			}
+	// 			if (a[n] == '\n')
+	// 			{
+	// 				line[0][i] = '\0';
+	// 				return (1);
+	// 			}
+	// 		}
+	// 	}
+	// 	n += 1;
+	// }
+	// while ((bytes_read_now = read(fd, &a[0], BUFF_SIZE)) != 0)
+	// {
+	// 	j = 0;
+	// 	while (a[j] != '\n' && j < BUFF_SIZE)
+	// 	{
+	// 		line[0][i] = a[j];
+	// 		i++;
+	// 		j++;
+	// 	}
+	// 	if (a[j] == '\n' && j < BUFF_SIZE)
+	// 	{
+	// 		line[0][i] = '\0';
+	// 		return (1);
+	// 	}
+	// }
+	while (1)
 	{
-		if (a[n] == '\n')
+		i = 0;
+		if (j == 0)
+			bytes_read_now = read(fd, &a[0], BUFF_SIZE);
+		while (j < BUFF_SIZE)
 		{
-			n += 1;
-			while (n < BUFF_SIZE)
+			if (a[j] != '\n')
 			{
-				printf("n: %d\n", n);
-				line[0][i] = a[n];
-				n++;
-				i++;
+				line[0][i] = a[j];
 			}
-		}
-		n += 1;
-	}
-	while ((bytes_read_now = read(fd, &a[0], BUFF_SIZE)) != 0)
-	{
-		j = 0;
-		while (a[j] != '\n' && j < BUFF_SIZE)
-		{
-			line[0][i] = a[j];
-			i++;
+			if (a[j] == '\n')
+			{
+				line[0][i] = '\0';
+			}
 			j++;
+			i++;
 		}
-		if (a[j] == '\n' && j < BUFF_SIZE)
-		{
-			line[0][i] = '\0';
-			return (1);
-		}
+
 	}
 	if (a[0] != '\n' && j != 0)
 		return (1);
 	return (0);
 }
 
-// int	main(void)
-// {
-// 	int fd = open("text", O_RDONLY);
-// 	char *line;
-// 	int x;
-// 	while (x = get_next_line(fd, &line))
-// 	{
-// 		printf("x: %d\n", x);
-// 		printf("line: %s\n", line);
-// 	}
-// 	close(fd);
-//  }
+int	main(void)
+{
+	int fd = open("text", O_RDONLY);
+	char *line;
+	int x;
+	while (x = get_next_line(fd, &line))
+	{
+		printf("x: %d\n", x);
+		printf("line: %s\n", line);
+	}
+	close(fd);
+ }

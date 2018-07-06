@@ -12,8 +12,8 @@ int	get_next_line(const int fd, char **line)
 	static int bytes_read;
 	int bytes_read_now;
 	int j;
+	static int flag;
 
-	printf("fd: %d\n", fd);
 	if (fd < 0 || line == NULL || read(fd, a, 0))
 		return (-1);
 	if (i == 0)
@@ -24,6 +24,7 @@ int	get_next_line(const int fd, char **line)
 		i = 0;
 		prev_fd = fd;
 		bytes_read = 0;
+		flag = 0;
 	}
 	if (i == 0)
 	{
@@ -41,10 +42,10 @@ int	get_next_line(const int fd, char **line)
 			{
 				i += 1;
 				line[0][j] = '\0';
+				printf("bytes_read: %d\n", bytes_read);
+				printf("i - 1: %d\n", i - 1);
 				if (i - 1 == bytes_read)
-				{
 					return (0);
-				}
 				return (1);
 			}
 			ft_strncpy(&line[0][j], &a[i - (BUFF_SIZE * count)], 1);
@@ -59,22 +60,29 @@ int	get_next_line(const int fd, char **line)
 		}
 		if (!bytes_read_now)
 		{
+			if (a[i - (BUFF_SIZE * count)] != '\n' && flag == 0)
+			{
+				flag = 1;
+				return (1);
+			}
 			return (0);
 		}
 	}
 }
 
-// int	main(void)
-// {
-// 	char **line;
-// 	int fd;
-// 	int eof;
-// 	eof = 26;
-// //	line = (char**)malloc(1);
-// //	line[0] = (char*)malloc(10);
-// 	fd = open("one_big_fat_line.txt", O_RDONLY);
-// 	while (get_next_line(fd, line));
-// 	printf("read: %zd\n", read(fd, NULL, 10));
-// 	close(fd);
-// 	return (0);
-// }
+int	main(void)
+{
+	char **line;
+	int fd;
+	int eof;
+	eof = 26;
+//	line = (char**)malloc(1);
+//	line[0] = (char*)malloc(10);
+	fd = open("text", O_RDONLY);
+	while (eof = get_next_line(fd, line))
+	{
+		printf("line: %s\n", line[0]);
+	}
+	close(fd);
+	return (0);
+}
