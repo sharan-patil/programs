@@ -22,7 +22,11 @@ int	get_next_line(const int fd, char **line)
 	static int i;
 	int j;
 	int bytes_read_now;
+	int flag;
 
+	flag = 0;
+	if (fd < 0 || line == NULL || read(fd, a, 0))
+		return (-1);
 	j = 0;
 	line[0] = (char*)malloc(1000);
 	if (i == 0)
@@ -30,31 +34,39 @@ int	get_next_line(const int fd, char **line)
 		bytes_read_now = read(fd, a, BUFF_SIZE);
 		a[bytes_read_now] = '\0';
 	}
+	if (i == BUFF_SIZE)
+	{
+		bytes_read_now = read(fd, a, BUFF_SIZE);
+		a[bytes_read_now] = '\0';
+		i = 0;
+		if (!bytes_read_now)
+		{
+			ft_bzero(a, BUFF_SIZE);
+			return (0);
+		}
+	}
 	while (i < BUFF_SIZE)
 	{
+		flag = 0;
 		if (a[i] == '\n')
 		{
 			line[0][j] = '\0';
 			i++;
+			flag = 1;
+		}
+		else
+		{
+			line[0][j] = a[i];
+			j++;
+			i++;
+		}
+		if (flag)
+		{
 			return (1);
 		}
-		line[0][j] = a[i];
-		j++;
-		i++;
-		if (i == BUFF_SIZE)
-		{
-			bytes_read_now = read(fd, a, BUFF_SIZE);
-			a[bytes_read_now] = '\0';
-			i = 0;
-			if (!bytes_read_now)
-			{
-				ft_bzero(a, BUFF_SIZE);
-				return (0);
-			}
-		}
 	}
-	i = 0;
-	ft_bzero(a, BUFF_SIZE);
+	// i = 0;
+	// ft_bzero(a, BUFF_SIZE);
 	return (0);
 }
 
@@ -65,13 +77,13 @@ int	get_next_line(const int fd, char **line)
 // 	int ret;
 // 	while ((ret = get_next_line(fd, new)))
 // 	{
-// 		printf("new[0]: %s && ret = %d\n", new[0], ret);
+// 		printf("new[0]: \'%s\' && ret = %d\n", new[0], ret);
 // 	}
 // 	close(fd);
 // 	fd = open("text2", O_RDONLY);
 // 	while ((ret = get_next_line(fd, new)))
 // 	{
-// 		printf("new[0]: %s && ret = %d\n", new[0], ret);
+// 		printf("new[0]: \'%s\' && ret = %d\n", new[0], ret);
 // 	}
 // 	close(fd);
 // 	return (0);
