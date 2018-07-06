@@ -47,7 +47,6 @@ int	get_next_line(const int fd, char **line)
 	}
 	while (i < BUFF_SIZE)
 	{
-		flag = 0;
 		if (a[i] == '\n')
 		{
 			line[0][j] = '\0';
