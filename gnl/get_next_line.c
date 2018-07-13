@@ -24,6 +24,8 @@ int	get_next_line(const int fd, char **line)
 	int j;
 
 	j = 0;
+	if (fd < 0 || line == NULL || read(fd, a, 0))
+		return (-1);
 	line[0] = (char*)malloc(10000);
 	while (i < BUFF_SIZE)
 	{
@@ -52,13 +54,20 @@ int	get_next_line(const int fd, char **line)
 			i = 0;
 			return (0);
 		}
+		// if (i == bytes_read_now && bytes_read_now < BUFF_SIZE)
+		// {
+		// 	i = 0;
+		// 	return (1);
+		// }
 		line[0][j] = a[i];
 		j++;
 		i++;
-		if (i == BUFF_SIZE)
+		if (i == bytes_read_now && bytes_read_now < BUFF_SIZE)
 		{
-			i = 0;
+			return (1);
 		}
+		if (i == BUFF_SIZE)
+			i = 0;
 	}
 	return (0);
 }
