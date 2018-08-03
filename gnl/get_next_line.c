@@ -16,59 +16,63 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+typedef	struct variables{
+	long int i;
+	long int bytes_read;
+	long int count;
+	char text[BUFF_SIZE + 1];
+	int begin;
+}s_variables;
+
 int	get_next_line(const int fd, char **line)
 {
-	static int i;
-	static char a[BUFF_SIZE + 1];
-	static int bytes_read_now;
-	int j;
+	static s_variables x;
+	int len;
 
-	j = 0;
-	if (fd < 0 || line == NULL || read(fd, a, 0))
-		return (-1);
-	line[0] = (char*)malloc(10000);
-	while (i < BUFF_SIZE)
+	len = 0;
+	line[0] = (char*)malloc(1000);
+	if (x.begin == 0)
 	{
-		if (i == 0)
-		{
-			bytes_read_now = read(fd, a, BUFF_SIZE);
-			a[bytes_read_now] = '\0';
-			if (!bytes_read_now)
-				return (0);
-		}
-		if (a[i] == '\n')
-		{
-			i++;
-			line[0][j] = '\0';
-			// if (bytes_read_now < BUFF_SIZE)
-			// {
-			// 	i = 0;
-			// 	return (0);
-			// }
-			if (i == BUFF_SIZE)
-				i = 0;
-			return (1);
-		}
-		if (i >= bytes_read_now)
-		{
-			i = 0;
-			return (0);
-		}
-		// if (i == bytes_read_now && bytes_read_now < BUFF_SIZE)
-		// {
-		// 	i = 0;
-		// 	return (1);
-		// }
-		line[0][j] = a[i];
-		j++;
-		i++;
-		if (i == bytes_read_now && bytes_read_now < BUFF_SIZE)
-		{
-			return (1);
-		}
-		if (i == BUFF_SIZE)
-			i = 0;
+		x.bytes_read = read(fd, x.text, BUFF_SIZE);
+		x.begin++;
 	}
+	while (1)
+	{
+		while (x.count < x.bytes_read)
+		{
+			if (x.text[x.count] != '\n')
+			{
+				printf("x.text[x.count]: %c\n", x.text[x.count]);
+				line[0][len] = x.text[x.count];
+			}
+			else
+			{
+				x.count = 0;
+				return (1);
+			}
+			x.count++;
+			len++;
+		}
+		if (x.count == x.bytes_read)
+		{
+			x.bytes_read = read(fd, x.text, BUFF_SIZE) + x.bytes_read;
+			x.count = 0;
+		}
+	}
+	return (0);
+}
+
+int	main(void)
+{
+	char **line;
+	int i = 0;
+	int fd = open("text", O_RDONLY);
+	while (get_next_line(fd, line))
+	{
+		printf("line: %s\n", line[0]);
+		i++;
+	}
+	close(fd);
 	return (0);
 }
 
