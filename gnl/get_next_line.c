@@ -72,19 +72,19 @@ int	get_next_line(const int fd, char **line)
 	return (0);
 }
 
-int	main(void)
-{
-	char **line;
-	int i = 0;
-	int fd = open("text", O_RDONLY);
-	while (get_next_line(fd, line))
-	{
-		printf("%s\n", line[0]);
-		i++;
-	}
-	close(fd);
-	return (0);
-}
+// int	main(void)
+// {
+// 	char **line;
+// 	int i = 0;
+// 	int fd = open("text", O_RDONLY);
+// 	while (get_next_line(fd, line))
+// 	{
+// 		printf("%s\n", line[0]);
+// 		i++;
+// 	}
+// 	close(fd);
+// 	return (0);
+// }
 
 // int	main(void)
 // {
