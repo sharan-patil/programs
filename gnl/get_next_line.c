@@ -17,46 +17,56 @@
 #include <fcntl.h>
 
 typedef	struct variables{
-	long int i;
 	long int bytes_read;
 	long int count;
 	char text[BUFF_SIZE + 1];
-	int begin;
+	int saved_fd;
 }s_variables;
 
 int	get_next_line(const int fd, char **line)
 {
 	static s_variables x;
 	int len;
+	int test;
 
+	if (fd < 0 || line == NULL || read(fd, x.text, 0))
+		return (-1);
+	test = 1;
 	len = 0;
 	line[0] = (char*)malloc(1000);
-	if (x.begin == 0)
+	if (x.count == 0)
 	{
 		x.bytes_read = read(fd, x.text, BUFF_SIZE);
-		x.begin++;
 	}
-	while (1)
+	while (test)
 	{
 		while (x.count < x.bytes_read)
 		{
 			if (x.text[x.count] != '\n')
 			{
-				printf("x.text[x.count]: %c\n", x.text[x.count]);
 				line[0][len] = x.text[x.count];
 			}
 			else
 			{
-				x.count = 0;
+				x.count++;
+				line[0][len] = '\0';
 				return (1);
 			}
 			x.count++;
 			len++;
+			if (x.bytes_read != BUFF_SIZE && x.count == x.bytes_read)
+			{
+				return (1);
+			}
 		}
 		if (x.count == x.bytes_read)
 		{
-			x.bytes_read = read(fd, x.text, BUFF_SIZE) + x.bytes_read;
+			x.bytes_read = read(fd, x.text, BUFF_SIZE);
 			x.count = 0;
+			if (x.bytes_read == 0)
+			{
+				return (0);
+			}
 		}
 	}
 	return (0);
@@ -69,7 +79,7 @@ int	main(void)
 	int fd = open("text", O_RDONLY);
 	while (get_next_line(fd, line))
 	{
-		printf("line: %s\n", line[0]);
+		printf("%s\n", line[0]);
 		i++;
 	}
 	close(fd);
