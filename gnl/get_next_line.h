@@ -22,7 +22,7 @@
 
 typedef	struct variables{
 	int bytes_read;
-		int count;
+	int count;
 	char text[BUFF_SIZE + 1];
 	int saved_fd;
 }s_variables;

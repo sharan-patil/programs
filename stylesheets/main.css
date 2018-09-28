@@ -1,0 +1,54 @@
+body {
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	background-color: #05386B;
+}
+
+a {
+
+	color: white;
+	text-decoration: none;
+}
+
+a:hover {
+	color: black;
+}
+
+a p {
+	display: none;
+}
+
+a:hover p {
+	display: block;
+}
+
+h3 {
+	font-weight: normal;
+}
+
+#layout {
+	width: 1300px;
+	background-color: #05386B;
+	margin: auto;
+	color: white;
+}
+
+#header {
+	margin: none;
+	color: white;
+}
+
+#links {
+	color: white;
+	display: table;
+	margin: 0 auto;
+}
+
+#horizontal li {
+	display: inline;
+	margin: 30px;
+}
+
+#horizontal {
+	list-style: none;
+	padding: 20px;
+}
