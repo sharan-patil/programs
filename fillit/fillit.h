@@ -1,8 +1,6 @@
 #include "libft.h"
 #include <fcntl.h>
 
-typedef struct list{
-	char **fig;
-	int ans;
-	struct list *next;
-}node;
+typedef struct s_tetrimino{
+	int pieceOffset[4][2];
+} t_tetri;
