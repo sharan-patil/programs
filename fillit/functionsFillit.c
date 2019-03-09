@@ -43,7 +43,7 @@ int	recursiveOne(int i, int j, int blockNumber, int *arr)
 {
 	if (arr[0] == -1 && arr[1] == -1)
 	{
-		if (lastLetterAdded == '@')
+		if (lastLetterAdded <= '@')
 		{
 			g_square += 1;
 			blockNumber = 0;
@@ -255,10 +255,10 @@ void printCanvas()
 	{
 		while (j < g_square)
 		{
-			printf("%c", g_canvas[i][j]);
+			ft_putchar(g_canvas[i][j]);
 			j++;
 		}
-		printf("\n");
+		ft_putchar('\n');
 		i++;
 		j = 0;
 	}
@@ -272,26 +272,23 @@ int	*nextPoint(int x, int y)
 	int *arr;
 
 	arr = (int*)malloc(2*sizeof(int));
-	if (y == 0)
+	if (y == g_square - 1)
 	{
-		arr[0] = 0;
-		arr[1] = x + y + 1;
-	}
-	else
-	{
-		arr[0] = x + 1;
-		arr[1] = y - 1;
-	}
-	if (arr[0] > g_square - 1 || arr[1] > g_square - 1)
-	{
-		if (arr[0] > g_square - 1 && arr[0] + arr[1] == (2 * (g_square - 1)))
+		if (x == g_square - 1)
 		{
 			arr[0] = -1;
 			arr[1] = -1;
-			return arr;
 		}
 		else
-			return nextPoint(arr[0], arr[1]);
+		{
+			arr[0] = x + 1;
+			arr[1] = 0;
+		}
+	}
+	else
+	{
+		arr[0] = x;
+		arr[1] = y + 1;
 	}
 	return arr;
 }

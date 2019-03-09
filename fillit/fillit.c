@@ -11,6 +11,8 @@ int	main(int argc, char **argv)
 {
 	int *arr;
 
+	if (argc != 2)
+		return 0;
 	arr = (int*)malloc(2 * sizeof(int));
 	g_blocks[0].letter = 'A';
 	initializeCanvas();
