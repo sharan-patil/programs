@@ -178,27 +178,6 @@ void analyzePoints(char *file)
 }
 
 /*
-	Print current g_canvas.
-*/
-void printCanvas()
-{
-	int i = 0;
-	int j = 0;
-
-	while (i < g_square)
-	{
-		while (j < g_square)
-		{
-			ft_putchar(g_canvas[i][j]);
-			j++;
-		}
-		ft_putchar('\n');
-		i++;
-		j = 0;
-	}
-}
-
-/*
 	Finds the next point on the canvas in top-left order.
 */
 int	*nextPoint(int x, int y, int* arr)
@@ -222,88 +201,4 @@ int	*nextPoint(int x, int y, int* arr)
 		arr[1] = y + 1;
 	}
 	return arr;
-}
-
-/*
-	Checks if the given point on the canvas can accomadate the given block.
-*/
-int	checkPoint(int x, int y, t_tetri aBlock)
-{
-	int i;
-
-	i = 0;
-	while (i < 4)
-	{
-		if (x + aBlock.pieceOffset[i][0] > g_square - 1)
-			return 0;
-		if (y + aBlock.pieceOffset[i][1] > g_square - 1)
-			return 0;
-		if (g_canvas[x + aBlock.pieceOffset[i][0]][y + aBlock.pieceOffset[i][1]] != '.')
-			return 0;
-		i++;
-	}
-	return 1;
-}
-
-/*
-	Adds the given block at the given point on the canvas.
-	Use checkPoint() before this function as this does not perform
-		a check on the canvas.
-*/
-void addBlockOnCanvas(int x, int y, t_tetri aBlock)
-{
-	int i;
-
-	i = 0;
-	lastLetterAdded = aBlock.letter;
-	lastAddedPoint[lastLetterAdded - 65][0] = x;
-	lastAddedPoint[lastLetterAdded - 65][1] = y;
-	while (i < 4)
-	{
-		g_canvas[x + aBlock.pieceOffset[i][0]][y + aBlock.pieceOffset[i][1]] = lastLetterAdded;
-		i++;
-	}
-}
-
-/*
-	Removes the block with letter equal to var lastLetterAdded from canvas.
-*/
-void removeLastAddedBlock()
-{
-	int i;
-	int j;
-
-	i = 0;
-	j = 0;
-	while (i < g_square)
-	{
-		while (j < g_square)
-		{
-			if (g_canvas[i][j] == lastLetterAdded)
-				g_canvas[i][j] = '.';
-            j++;
-		}
-        j = 0;
-        i++;
-	}
-}
-
-/*
-	Initializes every element of g_canvas to '.' character.
-*/
-void initializeCanvas()
-{
-	int i = 0;
-	int j = 0;
-
-	while (i < 104)
-	{
-		while (j < 104)
-		{
-			g_canvas[i][j] = '.';
-			j++;
-		}
-		j = 0;
-		i++;
-    }
 }
