@@ -1,6 +1,6 @@
 FLAGS = -Wall -Wextra -Werror -I libft -o fillit
 
-FILES = fillit.c functionsFillit.c libft/libft.a
+FILES = fillit.c functionsFillit.c iterativeImp.c libft/libft.a
 
 NAME = fillit
 

@@ -20,7 +20,7 @@ int	main(int argc, char **argv)
 	movePointsLeft();
 	movePointsUp();
 	checkAtleastOneBlock(arr);
-	recursiveOne(0, 0, 0, arr);
+	iterativeImp();
 	printCanvas();
 	return (0);
 }

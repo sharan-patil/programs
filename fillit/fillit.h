@@ -7,8 +7,8 @@ typedef struct s_tetrimino{
 	char letter;
 } t_tetri;
 
+int	iterativeImp();
 void checkAtleastOneBlock(int* arr);
-int	recursiveOne(int i, int j, int blockNumber, int *arr);
 void printPoints();
 void movePointsUp();
 void movePointsLeft();

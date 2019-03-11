@@ -33,46 +33,6 @@ void checkAtleastOneBlock(int* arr)
 }
 
 /*
-	Uses recursive backtracking to figure out a square on the canvas.
-*/
-int	recursiveOne(int i, int j, int blockNumber, int *arr)
-{
-	if (arr[0] == -1 && arr[1] == -1)
-	{
-		if (lastLetterAdded <= '@')
-		{
-			g_square += 1;
-			blockNumber = 0;
-			i = 0;
-			j = 0;
-		}
-		else
-		{
-			removeLastAddedBlock();
-			blockNumber -= 1;
-			arr = nextPoint(lastAddedPoint[blockNumber][0], lastAddedPoint[blockNumber][1], arr);
-			lastLetterAdded -= 1;
-			return recursiveOne(arr[0], arr[1], blockNumber, arr);
-		}
-	}
-	if (checkPoint(i, j, g_blocks[blockNumber]))
-	{
-		addBlockOnCanvas(i, j, g_blocks[blockNumber]);
-		arr[0] = 0;
-		arr[1] = 0;
-		blockNumber += 1;
-		if (blockNumber == g_numberOfTetriminos)
-			return 0;
-		return recursiveOne(arr[0], arr[1], blockNumber, arr);
-	}
-	else
-	{
-		arr = nextPoint(i, j, arr);
-		return recursiveOne(arr[0], arr[1], blockNumber, arr);
-	}
-}
-
-/*
 	Moves the values in global var to possible topmost position.
 */
 void movePointsUp()
