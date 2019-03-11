@@ -63,17 +63,3 @@ int	get_next_line(const int fd, char **line)
 	}
 	return (0);
 }
-
-int	main(void)
-{
-	char *ptr;
-	int i = 0;
-	int fd = open("text", O_RDONLY);
-	while (get_next_line(fd, &ptr))
-	{
-		printf("%s\n", ptr);
-		i++;
-	}
-	close(fd);
-	return (0);
-}

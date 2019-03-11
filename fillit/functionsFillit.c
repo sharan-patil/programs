@@ -10,21 +10,19 @@ extern int lastAddedPoint[26][2];
 /*
 	Increases the value of g_square until atleast one block can fit.
 */
-void checkAtleastOneBlock()
+void checkAtleastOneBlock(int* arr)
 {
-	int *arr;
 	int i = 0;
 
-	arr = (int*)malloc(2 * sizeof(int));
 	arr[0] = 0;
 	arr[1] = 0;
 	while(i < g_square * g_square)
 	{
-		if (checkPoint(arr[0], arr[1], g_blocks[0]))
+		if (checkPoint(arr[0], arr[1], g_blocks[0], arr))
 		{
 			return ;
 		}
-		arr = nextPoint(arr[0], arr[1]);
+		arr = nextPoint(arr[0], arr[1], arr);
 		i++;
 		if (i == g_square * g_square - 1)
 		{
@@ -52,16 +50,16 @@ int	recursiveOne(int i, int j, int blockNumber, int *arr)
 		}
 		else
 		{
-			removeLastAddedBlock();
+			removeLastAddedBlock(arr);
 			blockNumber -= 1;
-			arr = nextPoint(lastAddedPoint[blockNumber][0], lastAddedPoint[blockNumber][1]);
+			arr = nextPoint(lastAddedPoint[blockNumber][0], lastAddedPoint[blockNumber][1], arr);
 			lastLetterAdded -= 1;
 			return recursiveOne(arr[0], arr[1], blockNumber, arr);
 		}
 	}
-	if (checkPoint(i, j, g_blocks[blockNumber]))
+	if (checkPoint(i, j, g_blocks[blockNumber], arr))
 	{
-		addBlockOnCanvas(i, j, g_blocks[blockNumber]);
+		addBlockOnCanvas(i, j, g_blocks[blockNumber], arr);
 		arr[0] = 0;
 		arr[1] = 0;
 		blockNumber += 1;
@@ -71,31 +69,9 @@ int	recursiveOne(int i, int j, int blockNumber, int *arr)
 	}
 	else
 	{
-		arr = nextPoint(i, j);
+		arr = nextPoint(i, j, arr);
 		return recursiveOne(arr[0], arr[1], blockNumber, arr);
 	}
-}
-
-void printPoints()
-{
-	int i;
-	int j;
-
-	i = 0;
-	printf("-------------------------------------------\n");
-	while (i < g_numberOfTetriminos)
-	{
-		j = 0;
-		while (j < 4)
-		{
-			printf("%d %d\n", g_blocks[i].pieceOffset[j][0], g_blocks[i].pieceOffset[j][1]);
-			j++;
-		}
-		printf("Letter: %c\n", g_blocks[i].letter);
-		printf("\n");
-		i++;
-	}
-	printf("-------------------------------------------\n");
 }
 
 /*
@@ -267,11 +243,8 @@ void printCanvas()
 /*
 	Finds the next point on the canvas in top-left order.
 */
-int	*nextPoint(int x, int y)
+int	*nextPoint(int x, int y, int *arr)
 {
-	int *arr;
-
-	arr = (int*)malloc(2*sizeof(int));
 	if (y == g_square - 1)
 	{
 		if (x == g_square - 1)
@@ -296,21 +269,21 @@ int	*nextPoint(int x, int y)
 /*
 	Checks if the given point on the canvas can accomadate the given block.
 */
-int	checkPoint(int x, int y, t_tetri aBlock)
+int	checkPoint(int x, int y, t_tetri aBlock, int* arr)
 {
-	int i = 0;
+	arr[2] = 0;
 
-	while (i < 4)
+	while (arr[2] < 4)
 	{
-		if (x + aBlock.pieceOffset[i][0] > g_square - 1)
+		if (x + aBlock.pieceOffset[arr[2]][0] > g_square - 1)
 			return 0;
-		if (y + aBlock.pieceOffset[i][1] > g_square - 1)
+		if (y + aBlock.pieceOffset[arr[2]][1] > g_square - 1)
 			return 0;
-		if (g_canvas[x + aBlock.pieceOffset[i][0]][y + aBlock.pieceOffset[i][1]] != '.')
+		if (g_canvas[x + aBlock.pieceOffset[arr[2]][0]][y + aBlock.pieceOffset[arr[2]][1]] != '.')
 			return 0;
-		i++;
+		arr[2]++;
 	}
-	return 1;
+	return arr[2];
 }
 
 /*
@@ -318,38 +291,37 @@ int	checkPoint(int x, int y, t_tetri aBlock)
 	Use checkPoint() before this function as this does not perform
 		a check on the canvas.
 */
-void addBlockOnCanvas(int x, int y, t_tetri aBlock)
+void addBlockOnCanvas(int x, int y, t_tetri aBlock, int* arr)
 {
-	int i = 0;
+	arr[3] = 0;
 
 	lastLetterAdded = aBlock.letter;
 	lastAddedPoint[lastLetterAdded - 65][0] = x;
 	lastAddedPoint[lastLetterAdded - 65][1] = y;
-	while (i < 4)
+	while (arr[3] < 4)
 	{
-		g_canvas[x + aBlock.pieceOffset[i][0]][y + aBlock.pieceOffset[i][1]] = lastLetterAdded;
-		i++;
+		g_canvas[x + aBlock.pieceOffset[arr[3]][0]][y + aBlock.pieceOffset[arr[3]][1]] = lastLetterAdded;
+		arr[3]++;
 	}
 }
 
 /*
 	Removes the block with letter equal to var lastLetterAdded from canvas.
 */
-void removeLastAddedBlock()
+void removeLastAddedBlock(int* arr)
 {
-	int i = 0;
-	int j = 0;
-
-	while (i < g_square)
+    arr[2] = 0;
+    arr[3] = 0;
+	while (arr[2] < g_square)
 	{
-		while (j < g_square)
+		while (arr[3] < g_square)
 		{
-			if (g_canvas[i][j] == lastLetterAdded)
-				g_canvas[i][j] = '.';
-			j++;
+			if (g_canvas[arr[2]][arr[3]] == lastLetterAdded)
+				g_canvas[arr[2]][arr[3]] = '.';
+            arr[3]++;
 		}
-		j = 0;
-		i++;
+        arr[3] = 0;
+        arr[2]++;
 	}
 }
 
@@ -370,5 +342,5 @@ void initializeCanvas()
 		}
 		j = 0;
 		i++;
-	}
+    }
 }

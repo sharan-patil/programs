@@ -7,15 +7,15 @@ typedef struct s_tetrimino{
 	char letter;
 } t_tetri;
 
-void checkAtleastOneBlock();
+void checkAtleastOneBlock(int* arr);
 int	recursiveOne(int i, int j, int blockNumber, int *arr);
 void printPoints();
 void movePointsUp();
 void movePointsLeft();
 void analyzePoints(char *file);
 void initializeCanvas();
-int	checkPoint(int x, int y, t_tetri aBlock);
-int	*nextPoint(int x, int y);
+int	checkPoint(int x, int y, t_tetri aBlock, int* arr);
+int	*nextPoint(int x, int y, int *arr);
 void printCanvas();
-void addBlockOnCanvas(int x, int y, t_tetri aBlock);
-void removeLastAddedBlock();
+void addBlockOnCanvas(int x, int y, t_tetri aBlock, int* arr);
+void removeLastAddedBlock(int* arr);

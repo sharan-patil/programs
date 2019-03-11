@@ -13,13 +13,13 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return 0;
-	arr = (int*)malloc(2 * sizeof(int));
+	arr = (int*)malloc(4 * sizeof(int));
 	g_blocks[0].letter = 'A';
 	initializeCanvas();
 	analyzePoints(argv[1]);
 	movePointsLeft();
 	movePointsUp();
-	checkAtleastOneBlock();
+	checkAtleastOneBlock(arr);
 	recursiveOne(0, 0, 0, arr);
 	printCanvas();
 	return (0);
