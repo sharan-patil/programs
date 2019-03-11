@@ -4,9 +4,11 @@ FILES = fillit.c functionsFillit.c libft/libft.a
 
 NAME = fillit
 
-$(NAME):
-	make -C libft
+$(NAME): $(FILES)
 	gcc $(FLAGS) $(FILES)
+
+$(FILES):
+	make -C libft
 
 all: $(NAME)
 
