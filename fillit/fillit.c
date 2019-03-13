@@ -7,6 +7,65 @@ char g_canvas[104][104];
 char lastLetterAdded;
 int lastAddedPoint[26][2];
 
+int checkVicinity(int pointNumber, int blockNumber)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (i < 4)
+	{
+		if (pointNumber != i)
+		{
+			if (g_blocks[blockNumber].pieceOffset[pointNumber][0] == g_blocks[blockNumber].pieceOffset[i][0])
+			{
+				if (g_blocks[blockNumber].pieceOffset[pointNumber][1] + 1 == g_blocks[blockNumber].pieceOffset[i][1])
+					j++;
+				if (g_blocks[blockNumber].pieceOffset[pointNumber][1] - 1 == g_blocks[blockNumber].pieceOffset[i][1])
+					j++;
+			}
+			if (g_blocks[blockNumber].pieceOffset[pointNumber][1] == g_blocks[blockNumber].pieceOffset[i][1])
+			{
+				if (g_blocks[blockNumber].pieceOffset[pointNumber][0] + 1 == g_blocks[blockNumber].pieceOffset[i][0])
+					j++;
+				if (g_blocks[blockNumber].pieceOffset[pointNumber][0] - 1 == g_blocks[blockNumber].pieceOffset[i][0])
+					j++;
+			}
+		}
+		i++;
+	}
+	return j;
+}
+
+void validTetriminos()
+{
+	int i;
+	int j;
+	int sum;
+	int temp;
+
+	temp = 0;
+	sum = 0;
+	i = 0;
+	j = 0;
+	while (i < g_numberOfTetriminos)
+	{
+		while (j < 4)
+		{
+			if (!(temp = checkVicinity(j, i)))
+				exitError();
+			sum += temp;
+			j++;
+		}
+		if (sum != 6 && sum != 8)
+			exitError();
+		sum = 0;
+		i++;
+		j = 0;
+	}
+}
+
 /*
 	A function that prints error and quits the program.
 */
@@ -47,6 +106,7 @@ int	main(int argc, char **argv)
 	g_blocks[0].letter = 'A';
 	initializeCanvas();
 	analyzePoints(argv[1]);
+	validTetriminos();
 	movePointsLeft();
 	movePointsUp();
 	checkAtleastOneBlock(arr);

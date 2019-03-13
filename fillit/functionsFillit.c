@@ -142,14 +142,19 @@ void analyzePoints(char *file)
 	char arr[5];
 	char newLine;
 	int checker[6];
+	int bytesRead;
+	int totalBytesRead;
 
+	totalBytesRead = 0;
+	bytesRead = 0;
 	checker[0] = 0;
 	checker[5] = 0;
 	checker[4] = 0;
 	checker[2] = 0;
 	fd = open(file, O_RDONLY);
-	while (read(fd, arr, 5))
+	while ((bytesRead = read(fd, arr, 5)))
 	{
+		totalBytesRead += bytesRead;
 		checker[3] = 0;
 		while (checker[3] < 4)
 		{
@@ -176,6 +181,7 @@ void analyzePoints(char *file)
 			checker[2] = 0;
 			checker[4]++;
 			checker[1] = read(fd, &newLine, 1);
+			totalBytesRead += checker[1];
 			if (newLine != '\n')
 			{
 				if (checker[1] != 0)
@@ -185,6 +191,8 @@ void analyzePoints(char *file)
 		}
 	}
 	if (g_numberOfTetriminos == 0)
+		exitError();
+	if (totalBytesRead != g_numberOfTetriminos * 20 + g_numberOfTetriminos - 1)
 		exitError();
 	close(fd);
 }
