@@ -7,6 +7,7 @@ typedef struct s_tetrimino{
 	char letter;
 } t_tetri;
 
+void exitError();
 int	iterativeImp();
 void checkAtleastOneBlock(int* arr);
 void printPoints();

@@ -8,6 +8,15 @@ char lastLetterAdded;
 int lastAddedPoint[26][2];
 
 /*
+	A function that prints error and quits the program.
+*/
+void exitError()
+{
+	ft_putstr("error\n");
+	exit(0);
+}
+
+/*
 	Print current g_canvas.
 */
 void printCanvas()

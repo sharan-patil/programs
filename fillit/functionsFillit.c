@@ -140,40 +140,52 @@ void analyzePoints(char *file)
 {
 	int fd;
 	char arr[5];
-	int i;
-	int j;
-	int k;
-	int l;
+	char newLine;
+	int checker[6];
 
-	l = 0;
-	k = 0;
-	j = 0;
+	checker[0] = 0;
+	checker[5] = 0;
+	checker[4] = 0;
+	checker[2] = 0;
 	fd = open(file, O_RDONLY);
 	while (read(fd, arr, 5))
 	{
-		i = 0;
-		while (i < 4)
+		checker[3] = 0;
+		while (checker[3] < 4)
 		{
-			if (arr[i] == '#')
+			if (arr[checker[3]] == '#')
 			{
-				g_blocks[k].pieceOffset[l][0] = j;
-				g_blocks[k].pieceOffset[l][1] = i;
-				l++;
-				l %= 4;
+				g_blocks[checker[4]].pieceOffset[checker[5]][0] = checker[2];
+				g_blocks[checker[4]].pieceOffset[checker[5]][1] = checker[3];
+				checker[5]++;
+				checker[5] %= 4;
+				checker[0]++;
 			}
-			i++;
+			if (arr[checker[3]] != '#' && arr[checker[3]] != '.')
+				exitError();
+			checker[3]++;
 		}
-		j++;
-		if (j == 4)
+		checker[2]++;
+		if (checker[2] == 4)
 		{
-			if (k > 0)
-				g_blocks[k].letter = g_blocks[k - 1].letter + 1;
-			j = 0;
-			k++;
-			read(fd, arr, 1);
+			if (checker[0] != 4)
+				exitError();
+			if (checker[4] > 0)
+				g_blocks[checker[4]].letter = g_blocks[checker[4] - 1].letter + 1;
+			checker[0] = 0;
+			checker[2] = 0;
+			checker[4]++;
+			checker[1] = read(fd, &newLine, 1);
+			if (newLine != '\n')
+			{
+				if (checker[1] != 0)
+					exitError();
+			}
 			g_numberOfTetriminos++;
 		}
 	}
+	if (g_numberOfTetriminos == 0)
+		exitError();
 	close(fd);
 }
 
