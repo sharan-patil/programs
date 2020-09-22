@@ -132,6 +132,20 @@ flagStruct initializeFlagVars(flagStruct temp)
     return temp;
 }
 
+flagStruct	sharpFlagChecker(char* flags, flagStruct flagVars)
+{
+	char *subString;
+	
+	subString = ft_strstr(flags, "#");
+	if (subString == NULL)
+		return flagVars;
+	else
+	{
+		flagVars.sharpFlag = 1;
+		return flagVars;
+	}
+}
+
 flagStruct	llFlagChecker(char* flags, flagStruct flagVars)
 {
 	char *subString;
@@ -177,7 +191,7 @@ flagStruct	lFlagChecker(char* flags, flagStruct flagVars)
 flagStruct	hFlagChecker(char* flags, flagStruct flagVars)
 {
 	char *subString;
-	
+	 
 	subString = ft_strstr(flags, "h");
 	if (subString == NULL)
 		return flagVars;
@@ -290,42 +304,42 @@ void printArg(flagStruct tempFlagStruct, char finalFlag)
 	if (finalFlag == 'c')
 	{
 		if (tempFlagStruct.lFlag)
-			ft_putchar(tempFlagStruct.argumentWideInt);
+			ft_putchar(tempFlagStruct.arguments.argumentWideInt);
 		else
-			ft_putchar(tempFlagStruct.argumentInt);
+			ft_putchar(tempFlagStruct.arguments.argumentInt);
 	}
 	else if (finalFlag == 's')
 	{
 		if (tempFlagStruct.lFlag)
-            ft_putstr_wchar(tempFlagStruct.argumentWide);
+            ft_putstr_wchar(tempFlagStruct.arguments.argumentWide);
         else
-            ft_putstr(tempFlagStruct.argumentChar);
+            ft_putstr(tempFlagStruct.arguments.argumentChar);
 	}
 	else if (finalFlag == 'd' || finalFlag == 'i')
 	{
 		if (tempFlagStruct.zFlag)
 		{
-			printNumber(tempFlagStruct.argumentSizeT);
+			printNumber(tempFlagStruct.arguments.argumentSSizeT);
 		}
 		else if (tempFlagStruct.llFlag || tempFlagStruct.jFlag)
 		{
-			printNumber(tempFlagStruct.argumentLLong);
+			printNumber(tempFlagStruct.arguments.argumentLLong);
 		}
 		else if (tempFlagStruct.lFlag)
 		{
-			printNumber(tempFlagStruct.argumentLong);
+			printNumber(tempFlagStruct.arguments.argumentLong);
 		}
 		else if (tempFlagStruct.hhFlag)
 		{
-			printNumber((int)tempFlagStruct.argumentCharacter);
+			printNumber((int)tempFlagStruct.arguments.argumentCharacter);
 		}
 		else if (tempFlagStruct.hFlag)
 		{
-			printNumber(tempFlagStruct.argumentShort);
+			printNumber(tempFlagStruct.arguments.argumentShort);
 		}
 		else
 		{
-			printNumber(tempFlagStruct.argumentInt);
+			printNumber(tempFlagStruct.arguments.argumentInt);
 		}
 	}
 }
@@ -336,29 +350,29 @@ flagStruct getSFlagArg(flagStruct tempFlagStruct)
 	
 	if (tempFlagStruct.lFlag)
 	{
-		tempFlagStruct.argumentWide = va_arg(ap, wchar_t*);
-		if (tempFlagStruct.argumentChar == 0)
+		tempFlagStruct.arguments.argumentWide = va_arg(ap, wchar_t*);
+		if (tempFlagStruct.arguments.argumentChar == 0)
 		{
 			ft_putstr("(null)");
 		}
 		else
-			tempFlagStruct.argLen = ft_strlen_wchar(tempFlagStruct.argumentWide);
+			tempFlagStruct.argLen = ft_strlen_wchar(tempFlagStruct.arguments.argumentWide);
 	}
 	else
 	{
-		tempFlagStruct.argumentChar = va_arg(ap, char*);
-		if (tempFlagStruct.argumentChar == 0)
+		tempFlagStruct.arguments.argumentChar = va_arg(ap, char*);
+		if (tempFlagStruct.arguments.argumentChar == 0)
 		{
 			ft_putstr("(null)");
 		}
 		else
 		{
-			tempFlagStruct.argLen = ft_strlen(tempFlagStruct.argumentChar);
+			tempFlagStruct.argLen = ft_strlen(tempFlagStruct.arguments.argumentChar);
 			if (tempFlagStruct.precisionExists && tempFlagStruct.integerPrecision < tempFlagStruct.argLen)
 			{
-				temp = ft_strdup(tempFlagStruct.argumentChar);
+				temp = ft_strdup(tempFlagStruct.arguments.argumentChar);
 				temp[tempFlagStruct.integerPrecision] = '\0';
-				tempFlagStruct.argumentChar = temp;
+				tempFlagStruct.arguments.argumentChar = temp;
 				tempFlagStruct.argLen = tempFlagStruct.integerPrecision;
 			}
 		}
@@ -371,13 +385,17 @@ flagStruct getArg(flagStruct tempFlagStruct, char finalFlag)
 	if (finalFlag == 'c')
 	{
     	if (!tempFlagStruct.lFlag)
-        	tempFlagStruct.argumentInt = (unsigned char)va_arg(ap, int);
+        	tempFlagStruct.arguments.argumentInt = (unsigned char)va_arg(ap, int);
 	    else
-        	tempFlagStruct.argumentWideInt = (wchar_t)va_arg(ap, int);
+        	tempFlagStruct.arguments.argumentWideInt = (wchar_t)va_arg(ap, int);
 	}
 	else if (finalFlag == 's')
 	{
 		tempFlagStruct = getSFlagArg(tempFlagStruct);
+	}
+	else if (finalFlag == 'd')
+	{
+		tempFlagStruct = getdFlagArgs(tempFlagStruct);
 	}
 	return tempFlagStruct;
 }
@@ -435,7 +453,7 @@ void sFlag(char* flags)
     sFlagVars = findPrecision(flags, sFlagVars);
 	sFlagVars = lFlagChecker(flags, sFlagVars);
 	sFlagVars = getArg(sFlagVars, 's');
-	if (sFlagVars.argumentChar == 0)
+	if (sFlagVars.arguments.argumentChar == 0)
 	{
 		return ;
 	}
@@ -471,42 +489,87 @@ flagStruct	getdFlagArgs(flagStruct flagVars)
 {
 	if (flagVars.zFlag)
 	{
-		flagVars.argumentSizeT = va_arg(ap, size_t);
-		flagVars.argLen = numberLength(flagVars.argumentSizeT);
+		flagVars.arguments.argumentSSizeT = va_arg(ap, ssize_t);
+		flagVars.argLen = numberLength(flagVars.arguments.argumentSSizeT);
 	}
 	else if (flagVars.llFlag || flagVars.jFlag)
 	{
-		flagVars.argumentLLong = va_arg(ap, long long int);
-		flagVars.argLen = numberLength(flagVars.argumentLLong);
-		if (flagVars.argumentLLong < 0)
+		flagVars.arguments.argumentLLong = va_arg(ap, long long int);
+		flagVars.argLen = numberLength(flagVars.arguments.argumentLLong);
+		if (flagVars.arguments.argumentLLong < 0)
 			flagVars.isNegative = 1;
 	}
 	else if (flagVars.lFlag)
 	{
-		flagVars.argumentLong = va_arg(ap, long int);
-		flagVars.argLen = numberLength(flagVars.argumentLong);
-		if (flagVars.argumentLong < 0)
+		flagVars.arguments.argumentLong = va_arg(ap, long int);
+		flagVars.argLen = numberLength(flagVars.arguments.argumentLong);
+		if (flagVars.arguments.argumentLong < 0)
 			flagVars.isNegative = 1;
 	}
 	else if (flagVars.hhFlag)
 	{
-		flagVars.argumentCharacter = va_arg(ap, int);
-		flagVars.argLen = numberLength(flagVars.argumentCharacter);
-		if (flagVars.argumentCharacter < 0)
+		flagVars.arguments.argumentCharacter = va_arg(ap, int);
+		flagVars.argLen = numberLength(flagVars.arguments.argumentCharacter);
+		if (flagVars.arguments.argumentCharacter < 0)
 			flagVars.isNegative = 1;
 	}
 	else if (flagVars.hFlag)
 	{
-		flagVars.argumentShort = va_arg(ap, int);
-		flagVars.argLen = numberLength(flagVars.argumentShort);
-		if (flagVars.argumentShort < 0)
+		flagVars.arguments.argumentShort = va_arg(ap, int);
+		flagVars.argLen = numberLength(flagVars.arguments.argumentShort);
+		if (flagVars.arguments.argumentShort < 0)
 			flagVars.isNegative = 1;
 	}
 	else
 	{
-		flagVars.argumentInt = va_arg(ap, int);
-		flagVars.argLen = numberLength(flagVars.argumentInt);
-		if (flagVars.argumentInt < 0)
+		flagVars.arguments.argumentInt = va_arg(ap, int);
+		flagVars.argLen = numberLength(flagVars.arguments.argumentInt);
+		if (flagVars.arguments.argumentInt < 0)
+			flagVars.isNegative = 1;
+	}
+	return flagVars;
+}
+
+flagStruct	getoFlagArgs(flagStruct flagVars)
+{
+	if (flagVars.zFlag)
+	{
+		flagVars.arguments.argumentSizeT = va_arg(ap, size_t);
+		flagVars.argLen = numberLength(flagVars.arguments.argumentSizeT);
+	}
+	else if (flagVars.llFlag || flagVars.jFlag)
+	{
+		flagVars.arguments.argumentLLong = va_arg(ap, long long int);
+		flagVars.argLen = numberLength(flagVars.arguments.argumentLLong);
+		if (flagVars.arguments.argumentLLong < 0)
+			flagVars.isNegative = 1;
+	}
+	else if (flagVars.lFlag)
+	{
+		flagVars.arguments.argumentLong = va_arg(ap, long int);
+		flagVars.argLen = numberLength(flagVars.arguments.argumentLong);
+		if (flagVars.arguments.argumentLong < 0)
+			flagVars.isNegative = 1;
+	}
+	else if (flagVars.hhFlag)
+	{
+		flagVars.arguments.argumentCharacter = va_arg(ap, int);
+		flagVars.argLen = numberLength(flagVars.arguments.argumentCharacter);
+		if (flagVars.arguments.argumentCharacter < 0)
+			flagVars.isNegative = 1;
+	}
+	else if (flagVars.hFlag)
+	{
+		flagVars.arguments.argumentShort = va_arg(ap, int);
+		flagVars.argLen = numberLength(flagVars.arguments.argumentShort);
+		if (flagVars.arguments.argumentShort < 0)
+			flagVars.isNegative = 1;
+	}
+	else
+	{
+		flagVars.arguments.argumentInt = va_arg(ap, int);
+		flagVars.argLen = numberLength(flagVars.arguments.argumentInt);
+		if (flagVars.arguments.argumentInt < 0)
 			flagVars.isNegative = 1;
 	}
 	return flagVars;
@@ -514,11 +577,28 @@ flagStruct	getdFlagArgs(flagStruct flagVars)
 
 flagStruct makeIntegerArgsNegative(flagStruct tempFlagStruct)
 {
-	tempFlagStruct.argumentInt *= -1;
-	tempFlagStruct.argumentLong *= -1;
-	tempFlagStruct.argumentLLong *= -1;
-	tempFlagStruct.argumentShort *= -1;
+	tempFlagStruct.arguments.argumentInt *= -1;
+	tempFlagStruct.arguments.argumentLong *= -1;
+	tempFlagStruct.arguments.argumentLLong *= -1;
+	tempFlagStruct.arguments.argumentShort *= -1;
 	return tempFlagStruct;
+}
+
+void oFlag(char *flags)
+{
+	flagStruct oFlagVars;
+	
+	oFlagVars = initializeFlagVars(oFlagVars);
+	oFlagVars = zeroAndMinusFlags(flags, oFlagVars);
+	oFlagVars = findFieldWidth(flags, oFlagVars);
+	oFlagVars = findPrecision(flags, oFlagVars);
+	oFlagVars = lFlagChecker(flags, oFlagVars);
+	oFlagVars = llFlagChecker(flags, oFlagVars);
+	oFlagVars = hFlagChecker(flags, oFlagVars);
+	oFlagVars = hhFlagChecker(flags, oFlagVars);
+	oFlagVars = jFlagChecker(flags, oFlagVars);
+	oFlagVars = zFlagChecker(flags, oFlagVars);
+	oFlagVars = sharpFlagChecker(flags, oFlagVars);
 }
 
 void dFlag(char* flags)
@@ -541,7 +621,7 @@ void dFlag(char* flags)
 	if (dFlagVars.plusFlag)
 		if (dFlagVars.spaceFlag)
 			dFlagVars.spaceFlag = 0;
-	dFlagVars = getdFlagArgs(dFlagVars);
+	dFlagVars = getArg(dFlagVars, 'd');
 	if (dFlagVars.widthExists && dFlagVars.integerWidth > dFlagVars.argLen)
 	{
 		if (dFlagVars.precisionExists && dFlagVars.integerPrecision > dFlagVars.argLen)
@@ -720,6 +800,17 @@ void processTempFlags(char* flags)
     }
 	else if (finalFlag == 'd' || finalFlag == 'i')
 	{
+		dFlag(flags);
+	}
+	else if (finalFlag == 'D')
+	{
+		temp = flags;
+		flags = (char*)ft_memalloc(flagsLen + 1);
+		flags = ft_strcpy(flags, temp);
+		flags[flagsLen - 1] = 'l';
+		flags[flagsLen] = 'd';
+		flags[flagsLen + 1] = '\0';
+		flagsLen = ft_strlen(flags);
 		dFlag(flags);
 	}
 }
